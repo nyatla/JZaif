@@ -4,7 +4,9 @@ Java用のZaifAPIラッパーです。PublicAPI、ExchangeAPI、StreamingAPI用�
 対応する通貨ペアは BTC-JPY/MONA-JPY/BTC-MONA/XEM-JPYです。
 
 <a href="https://zaif.jp/">Zaif.jp</a>
+
 <a href="https://corp.zaif.jp/api-docs/">Zaif Exchange APIドキュメント</a>
+
 
 ## セットアップ
 zipをダウンロードして展開し、.projectをインポートしてください。
