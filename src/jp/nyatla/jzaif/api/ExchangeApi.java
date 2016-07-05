@@ -1,3 +1,32 @@
+/*
+ * Copyright (c) 2016, nyatla
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met: 
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer. 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * The views and conclusions contained in the software and documentation are those
+ * of the authors and should not be interpreted as representing official policies, 
+ * either expressed or implied, of the FreeBSD Project.
+ */
+
 package jp.nyatla.jzaif.api;
 
 import java.text.ParseException;
@@ -24,7 +53,11 @@ import jp.nyatla.jzaif.types.CurrencyPair;
 import jp.nyatla.jzaif.types.SortOrder;
 import jp.nyatla.jzaif.types.TradeType;
 
-
+/**
+ * Zaif取引APIのラッパークラスです。
+ * 利用にはAPIキーの発行が必要です。
+ * https://corp.zaif.jp/api-docs/trade-api/
+ */
 public class ExchangeApi
 {
 	/** 浮動小数点/整数をzaifフォーマットで出力する関数*/
@@ -60,33 +93,58 @@ public class ExchangeApi
 		
 	}	
 	/**
-	 * nonceを自動で設定するコンストラクタ
+	 * nonceを自動で設定するコンストラクタです。
+	 * nonce値は現在時刻を基準に自動で設定します。
+	 * @param i_key
+	 * ZaifのAPIキー
 	 */
 	public ExchangeApi(ApiKey i_key)
 	{
 		this(i_key,makeAutoNonce());
 	}
+	/**
+	 * APIキーと初期のnonce値から、インスタンスを構築します。
+	 * @param i_key
+	 * Zaifのキーオブジェクト
+	 * @param i_nonce
+	 * nonceの初期値
+	 */
 	public ExchangeApi(ApiKey i_key,long i_nonce)
 	{
 		this._apikey=i_key;
 		this._nonce=i_nonce;
 	}
 
+	/**
+	 * get_infoコマンドを実行して戻り値を得ます。
+	 * @return
+	 * 結果を格納した{@link GetInfoResult}オブジェクト。
+	 */
 	public GetInfoResult getInfo()
 	{
 		return new GetInfoResult(this.doCommand("get_info",null));
 	}
 	/**
-	 * 
+	 * trade_historyコマンドを実行して戻り値を得ます
+	 * [Optional]パラメータはnullを設定できます。
 	 * @param i_from
+	 * [Optional]
 	 * @param i_count
+	 * [Optional]
 	 * @param i_from_id
+	 * [Optional]
 	 * @param i_end_id
+	 * [Optional]
 	 * @param i_order
+	 * [Optional]
 	 * @param i_since
+	 * [Optional]
 	 * @param i_end
+	 * [Optional]
 	 * @param i_currency_pair
+	 * [Optional]
 	 * @return
+	 * 結果を格納した{@link TradeHistoryResult}オブジェクト。
 	 */
 	public TradeHistoryResult tradeHistory(Integer i_from,Integer i_count,Long i_from_id,Long i_end_id,SortOrder i_order,Date i_since,Date i_end,CurrencyPair i_currency_pair)
 	{
@@ -104,7 +162,7 @@ public class ExchangeApi
 			p+="&from_id="+i_end_id.toString();
 		}
 		if(i_order!=null){
-			p+="&order="+i_order.strname;
+			p+="&order="+i_order.zname;
 		}
 		if(i_since!=null){
 			p+="&since="+(i_since.getTime()/1000);
@@ -113,34 +171,39 @@ public class ExchangeApi
 			p+="&end="+(i_end.getTime()/1000);
 		}
 		if(i_currency_pair!=null){
-			p+="&currency_pair="+i_currency_pair.shortname;
+			p+="&currency_pair="+i_currency_pair.zname;
 		}
 		return new TradeHistoryResult(this.doCommand("trade_history",p));
 	}
 	/**
 	 * Optionalパラメータを省略した{@link #tradeHistory}関数です。
 	 * @return
+	 * 結果を格納した{@link TradeHistoryResult}オブジェクト。
 	 */
 	public TradeHistoryResult tradeHistory()
 	{
 		return this.tradeHistory(null, null, null, null, null, null, null, null);
 	}
 	/**
-	 * 
+	 * active_ordersコマンドを実行して戻り値を得ます
+	 * [Optional]パラメータはnullを設定できます。
 	 * @param i_currency_pair
+	 * [Optional]
 	 * @return
+	 * 結果を格納した{@link ActiveOrdersResult}オブジェクト。
 	 */
 	public ActiveOrdersResult activeOrders(CurrencyPair i_currency_pair)
 	{
 		String p="";
 		if(i_currency_pair!=null){
-			p+="&currency_pair="+i_currency_pair.shortname;
+			p+="&currency_pair="+i_currency_pair.zname;
 		}
 		return new ActiveOrdersResult(this.doCommand("active_orders",p));
 	}
 	/**
 	 * Optionalパラメータを省略した{@link #activeOrders}関数です。
 	 * @return
+	 * 結果を格納した{@link ActiveOrdersResult}オブジェクト。
 	 */
 	public ActiveOrdersResult activeOrders()
 	{
@@ -148,7 +211,8 @@ public class ExchangeApi
 	}
 	
 	/**
-	 * 	
+	 * tradeコマンドを実行して戻り値を得ます
+	 * [Optional]パラメータはnullを設定できます。
 	 * @param i_currency_pair
 	 * [Required]
 	 * @param i_action
@@ -158,13 +222,15 @@ public class ExchangeApi
 	 * @param i_amount
 	 * [Required]
 	 * @param i_limit
+	 * [Optional]
 	 * @return
+	 * 結果を格納した{@link TradeResult}オブジェクト。
 	 */
 	public TradeResult trade(CurrencyPair i_currency_pair,TradeType i_action,double i_price,Number i_amount,Double i_limit)
 	{
 		String p="";
-		p+="&currency_pair="+i_currency_pair.shortname;
-		p+="&action="+i_action.strname;
+		p+="&currency_pair="+i_currency_pair.zname;
+		p+="&action="+i_action.zname;
 		p+="&price="+numberToStr(i_price);
 		p+="&amount="+numberToStr(i_amount.doubleValue());
 		if(i_limit!=null){
@@ -175,16 +241,18 @@ public class ExchangeApi
 	/**
 	 * Optionalを省略した{@link #trade}関数です。
 	 * @return
+	 * 結果を格納した{@link TradeResult}オブジェクト。
 	 */
 	public TradeResult trade(CurrencyPair i_currency_pair,TradeType i_action,double i_price,Number i_amount)
 	{
 		return this.trade(i_currency_pair, i_action, i_price, i_amount,null);
 	}
 	/**
-	 * 
+	 * cancel_orderコマンドを実行して戻り値を得ます
 	 * @param i_order_id
 	 * [Required]
 	 * @return
+	 * 結果を格納した{@link CancelOrderResult}オブジェクト。
 	 */
 	public CancelOrderResult cancelOrder(long i_order_id)
 	{
@@ -194,7 +262,8 @@ public class ExchangeApi
 		
 	}
 	/**
-	 * 
+	 * withdrawコマンドを実行して戻り値を得ます
+	 * [Optional]パラメータはnullを設定できます。
 	 * @param i_currency
 	 * [Required]
 	 * @param i_address
@@ -202,12 +271,14 @@ public class ExchangeApi
 	 * @param i_amount
 	 * [Required]
 	 * @param i_opt_fee
+	 * [Optional]
 	 * @return
+	 * 結果を格納した{@link WithdrawResult}オブジェクト。
 	 */
 	public WithdrawResult withdraw(Currency i_currency,String i_address,double i_amount,Double i_opt_fee)
 	{
 		String p="";
-		p+="&currency="+i_currency.shortname;
+		p+="&currency="+i_currency.zname;
 		p+="&address="+i_address;
 		p+="&amount="+numberToStr(i_amount);
 		if(i_opt_fee!=null){
@@ -218,6 +289,7 @@ public class ExchangeApi
 	/**
 	 * Optionalを省略した{@link #withdraw}関数です。
 	 * @return
+	 * 結果を格納した{@link WithdrawResult}オブジェクト。
 	 */
 	public WithdrawResult withdraw(Currency i_currency,String i_address,double i_amount)
 	{
@@ -225,21 +297,31 @@ public class ExchangeApi
 	}
 	
 	/**
+	 * deposit_historyコマンドを実行して戻り値を得ます
+	 * [Optional]パラメータはnullを設定できます。
 	 * @param i_currency
 	 * [Required]
 	 * @param i_from
+	 * [Optional]
 	 * @param i_count
+	 * [Optional]
 	 * @param i_from_id
+	 * [Optional]
 	 * @param i_end_id
+	 * [Optional]
 	 * @param i_order
+	 * [Optional]
 	 * @param i_since
+	 * [Optional]
 	 * @param i_end
+	 * [Optional]
 	 * @return
+	 * 結果を格納した{@link DepositHistoryResult}オブジェクト。
 	 */
 	public DepositHistoryResult depositHistory(Currency i_currency,Integer i_from,Integer i_count,Long i_from_id,Long i_end_id,SortOrder i_order,Date i_since,Date i_end)
 	{
 		String p="";
-		p+="&currency="+i_currency.shortname;
+		p+="&currency="+i_currency.zname;
 		if(i_from!=null){
 			p+="&from="+i_from.toString();
 		}
@@ -253,7 +335,7 @@ public class ExchangeApi
 			p+="&from_id="+i_end_id.toString();
 		}
 		if(i_order!=null){
-			p+="&order="+i_order.strname;
+			p+="&order="+i_order.zname;
 		}
 		if(i_since!=null){
 			p+="&since="+(i_since.getTime()/1000);
@@ -266,16 +348,38 @@ public class ExchangeApi
 	/**
 	 * Optionalを省略した{@link #depositHistory}関数です。
 	 * @return
+	 * 結果を格納した{@link DepositHistoryResult}オブジェクト。
 	 */	
 	public DepositHistoryResult depositHistory(Currency i_currency)
 	{
 		return this.depositHistory(i_currency,null, null, null, null, null, null, null);
 	}
-	
+	/**
+	 * withdraw_historyコマンドを実行して戻り値を得ます
+	 * [Optional]パラメータはnullを設定できます。
+	 * @param i_currency
+	 * [Required]
+	 * @param i_from
+	 * [Optional]
+	 * @param i_count
+	 * [Optional]
+	 * @param i_from_id
+	 * [Optional]
+	 * @param i_end_id
+	 * [Optional]
+	 * @param i_order
+	 * [Optional]
+	 * @param i_since
+	 * [Optional]
+	 * @param i_end
+	 * [Optional]
+	 * @return
+	 * 結果を格納した{@link WithdrawHistoryResult}オブジェクト。
+	 */
 	public WithdrawHistoryResult withdrawHistory(Currency i_currency,Integer i_from,Integer i_count,Long i_from_id,Long i_end_id,SortOrder i_order,Date i_since,Date i_end)
 	{
 		String p="";
-		p+="&currency="+i_currency.shortname;
+		p+="&currency="+i_currency.zname;
 		if(i_from!=null){
 			p+="&from="+i_from.toString();
 		}
@@ -289,7 +393,7 @@ public class ExchangeApi
 			p+="&from_id="+i_end_id.toString();
 		}
 		if(i_order!=null){
-			p+="&order="+i_order.strname;
+			p+="&order="+i_order.zname;
 		}
 		if(i_since!=null){
 			p+="&since="+(i_since.getTime()/1000);
@@ -302,6 +406,7 @@ public class ExchangeApi
 	/**
 	 * Optionalを省略した{@link #withdrawHistory}関数です。
 	 * @return
+	 * 結果を格納した{@link WithdrawHistoryResult}オブジェクト。
 	 */		
 	public WithdrawHistoryResult withdrawHistory(Currency i_currency)
 	{
