@@ -3,6 +3,10 @@
 Java用のZaifAPIラッパーです。PublicAPI、ExchangeAPI、StreamingAPI用のラッパーがあります。
 対応する通貨ペアは BTC-JPY/MONA-JPY/BTC-MONA/XEM-JPYです。
 
+* <a href="https://zaif.jp/">Zaif.jp</a>
+* <a href="https://corp.zaif.jp/api-docs/">Zaif Exchange APIドキュメント</a>
+
+
 ## セットアップ
 zipをダウンロードして展開し、.projectをインポートしてください。
 
@@ -38,7 +42,7 @@ ExchangeAPIにはAPIキーが必要です。
     {
     	ApiKey k=new ApiKey("YOUR API_KEY","YOUR SECRET KEY");
     	ExchangeApi lp=new ExchangeApi(k);
-    	//30000JPYで0.01BTC
+    	//ビットコインの買い板に30000円で0.01BTCの買いを出す。
     	TradeResult r=lp.trade(CurrencyPair.BTCJPY,TradeType.BID,30000,0.01);
     	System.out.println(r.success?String.format("orderid=%d",r.order_id):"method failed");
     	return;
@@ -85,6 +89,7 @@ ExchangeAPIにはAPIキーが必要です。
 
 
 BTC 15ALiKAYNLfye18Bh3jepxquy1azocWXk7
+
 MONA MN7KgERFbUnWRXajP4hBa3GxAxSfkNsq7Y
 
 
