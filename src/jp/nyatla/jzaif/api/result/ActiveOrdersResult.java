@@ -55,8 +55,8 @@ public class ActiveOrdersResult extends ExchangeCommonResult
 		public Item(long i_id,JSONObject i_jso)
 		{
 			this.id=i_id;
-			this.currency_pair=CurrencyPair.strToVal(i_jso.getString("currency_pair"));
-			this.action=TradeType.strToVal(i_jso.getString("action"));
+			this.currency_pair=CurrencyPair.toEnum(i_jso.getString("currency_pair"));
+			this.action=TradeType.toEnum(i_jso.getString("action"));
 			this.amount=i_jso.getDouble("amount");
 			this.price=i_jso.getDouble("price");
 			this.timestamp=new Date(i_jso.getLong("timestamp")*1000);

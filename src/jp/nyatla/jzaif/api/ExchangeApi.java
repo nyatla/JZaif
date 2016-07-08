@@ -162,7 +162,7 @@ public class ExchangeApi
 			p+="&from_id="+i_end_id.toString();
 		}
 		if(i_order!=null){
-			p+="&order="+i_order.zname;
+			p+="&order="+i_order.symbol;
 		}
 		if(i_since!=null){
 			p+="&since="+(i_since.getTime()/1000);
@@ -171,7 +171,7 @@ public class ExchangeApi
 			p+="&end="+(i_end.getTime()/1000);
 		}
 		if(i_currency_pair!=null){
-			p+="&currency_pair="+i_currency_pair.zname;
+			p+="&currency_pair="+i_currency_pair.symbol;
 		}
 		return new TradeHistoryResult(this.doCommand("trade_history",p));
 	}
@@ -196,7 +196,7 @@ public class ExchangeApi
 	{
 		String p="";
 		if(i_currency_pair!=null){
-			p+="&currency_pair="+i_currency_pair.zname;
+			p+="&currency_pair="+i_currency_pair.symbol;
 		}
 		return new ActiveOrdersResult(this.doCommand("active_orders",p));
 	}
@@ -229,8 +229,8 @@ public class ExchangeApi
 	public TradeResult trade(CurrencyPair i_currency_pair,TradeType i_action,double i_price,Number i_amount,Double i_limit)
 	{
 		String p="";
-		p+="&currency_pair="+i_currency_pair.zname;
-		p+="&action="+i_action.zname;
+		p+="&currency_pair="+i_currency_pair.symbol;
+		p+="&action="+i_action.symbol;
 		p+="&price="+numberToStr(i_price);
 		p+="&amount="+numberToStr(i_amount.doubleValue());
 		if(i_limit!=null){
@@ -278,7 +278,7 @@ public class ExchangeApi
 	public WithdrawResult withdraw(Currency i_currency,String i_address,double i_amount,Double i_opt_fee)
 	{
 		String p="";
-		p+="&currency="+i_currency.zname;
+		p+="&currency="+i_currency.symbol;
 		p+="&address="+i_address;
 		p+="&amount="+numberToStr(i_amount);
 		if(i_opt_fee!=null){
@@ -321,7 +321,7 @@ public class ExchangeApi
 	public DepositHistoryResult depositHistory(Currency i_currency,Integer i_from,Integer i_count,Long i_from_id,Long i_end_id,SortOrder i_order,Date i_since,Date i_end)
 	{
 		String p="";
-		p+="&currency="+i_currency.zname;
+		p+="&currency="+i_currency.symbol;
 		if(i_from!=null){
 			p+="&from="+i_from.toString();
 		}
@@ -335,7 +335,7 @@ public class ExchangeApi
 			p+="&from_id="+i_end_id.toString();
 		}
 		if(i_order!=null){
-			p+="&order="+i_order.zname;
+			p+="&order="+i_order.symbol;
 		}
 		if(i_since!=null){
 			p+="&since="+(i_since.getTime()/1000);
@@ -379,7 +379,7 @@ public class ExchangeApi
 	public WithdrawHistoryResult withdrawHistory(Currency i_currency,Integer i_from,Integer i_count,Long i_from_id,Long i_end_id,SortOrder i_order,Date i_since,Date i_end)
 	{
 		String p="";
-		p+="&currency="+i_currency.zname;
+		p+="&currency="+i_currency.symbol;
 		if(i_from!=null){
 			p+="&from="+i_from.toString();
 		}
@@ -393,7 +393,7 @@ public class ExchangeApi
 			p+="&from_id="+i_end_id.toString();
 		}
 		if(i_order!=null){
-			p+="&order="+i_order.zname;
+			p+="&order="+i_order.symbol;
 		}
 		if(i_since!=null){
 			p+="&since="+(i_since.getTime()/1000);

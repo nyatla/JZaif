@@ -55,7 +55,7 @@ public class StreamingRecv {
 	}
 	public static void main(String[] args)
 	{
-		CurrencyPair cp=CurrencyPair.strToVal(args[0]);
+		CurrencyPair cp=CurrencyPair.toEnum(args[0]);
 		StreamingApi lp=new Sa(cp);
 		try {
 			Thread.sleep(1000000000);

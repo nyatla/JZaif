@@ -28,30 +28,30 @@
  */
 package jp.nyatla.jzaif.types;
 
-public enum TradeType
+public enum TradeType implements NamedEnum.Interface
 {
-	BID("bid"),
-	ASK("ask");
+	BID("bid",1),
+	ASK("ask",2);
 	/** Zaifでの取引種別を文字列で保持します。*/	
-	final public String zname;
-	private TradeType(String i_zname)
+	final public String symbol;
+	final public int id;
+	private TradeType(String i_symbol,int id)
 	{
-		this.zname=i_zname;
+		this.symbol=i_symbol;
+		this.id=id;
 	}
-	/**
-	 * Zaif名を列挙値に変換します。
-	 * @param i_zname
-	 * 取引タイプのzaif名。
-	 * @return
-	 * 列挙値。
-	 */	
-	public static TradeType strToVal(String i_zname)
-	{
-		for(TradeType i:TradeType.values()){
-			if(i.zname.compareToIgnoreCase(i_zname)==0){
-				return i;
-			}
-		}
-		throw new IllegalArgumentException();
+	@Override
+	final public int getId(){
+		return this.id;
 	}
+	@Override
+	final public String getSymbol() {
+		return this.symbol;
+	}
+	public static TradeType toEnum(String i_symbol) {
+		return NamedEnum.toEnum(TradeType.class,i_symbol);
+	}
+	public static TradeType toEnum(int i_id) {
+		return NamedEnum.toEnum(TradeType.class,i_id);
+	}	
 }

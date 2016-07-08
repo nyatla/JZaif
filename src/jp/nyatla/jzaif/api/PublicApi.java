@@ -64,7 +64,7 @@ public class PublicApi
 	 */
 	public DepthResult depth()
 	{
-		String json_str=this._cl.getText(API_URL_PREFIX+"depth/"+this._cu_pair.zname);		
+		String json_str=this._cl.getText(API_URL_PREFIX+"depth/"+this._cu_pair.symbol);		
 		JSONObject jso=new JSONObject(json_str);
 		return new DepthResult(jso);
 	}
@@ -75,7 +75,7 @@ public class PublicApi
 	 */
 	public TickerResult ticker()
 	{
-		String json_str=this._cl.getText(API_URL_PREFIX+"ticker/"+this._cu_pair.zname);	
+		String json_str=this._cl.getText(API_URL_PREFIX+"ticker/"+this._cu_pair.symbol);	
 		JSONObject jso=new JSONObject(json_str);
 		return new TickerResult(jso);
 	}
@@ -86,7 +86,7 @@ public class PublicApi
 	 */	
 	public TradesResult trades()
 	{
-		String json_str=this._cl.getText(API_URL_PREFIX+"trades/"+this._cu_pair.zname);		
+		String json_str=this._cl.getText(API_URL_PREFIX+"trades/"+this._cu_pair.symbol);		
 		JSONArray jso=new JSONArray(json_str);
 		TradesResult r=new TradesResult(jso);
 		return r;
@@ -98,7 +98,7 @@ public class PublicApi
 	 */	
 	public double lastPrice()
 	{
-		String json_str=this._cl.getText(API_URL_PREFIX+"last_price/"+this._cu_pair.zname);		
+		String json_str=this._cl.getText(API_URL_PREFIX+"last_price/"+this._cu_pair.symbol);		
 		JSONObject jso=new JSONObject(json_str);
 		return jso.getDouble("last_price");
 	}	

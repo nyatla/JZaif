@@ -31,29 +31,30 @@ package jp.nyatla.jzaif.types;
 /**
  * ソートオーダー名を列挙するクラスです。
  */
-public enum SortOrder {
-	ASC("ASC"),
-	DESC("DESC");
+public enum SortOrder implements NamedEnum.Interface
+{
+	ASC("ASC",1),
+	DESC("DESC",2);
 	/** Zaifでのソートオーダー名を文字列で保持します。*/	
-	final public String zname;
-	private SortOrder(String i_zname)
+	final public String symbol;
+	final public int id;
+	private SortOrder(String i_symbol,int i_id)
 	{
-		this.zname=i_zname;
+		this.symbol=i_symbol;
+		this.id=i_id;
 	}
-	/**
-	 * Zaif名を列挙値に変換します。
-	 * @param i_zname
-	 * ソートオーダーのzaif名。
-	 * @return
-	 * 列挙値。
-	 */	
-	public static SortOrder strToVal(String i_zname)
-	{
-		for(SortOrder i:SortOrder.values()){
-			if(i.zname.compareToIgnoreCase(i_zname)==0){
-				return i;
-			}
-		}
-		throw new IllegalArgumentException();
+	@Override
+	final public int getId(){
+		return this.id;
 	}
+	@Override
+	final public String getSymbol() {
+		return this.symbol;
+	}
+	public static SortOrder toEnum(String i_symbol) {
+		return NamedEnum.toEnum(SortOrder.class,i_symbol);
+	}
+	public static SortOrder toEnum(int i_id) {
+		return NamedEnum.toEnum(SortOrder.class,i_id);
+	}	
 }

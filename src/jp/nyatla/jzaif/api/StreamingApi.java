@@ -31,6 +31,7 @@ package jp.nyatla.jzaif.api;
 import org.json.JSONObject;
 
 import jp.nyatla.jzaif.api.result.StreamingNotify;
+import jp.nyatla.jzaif.io.IWebsocketClient;
 import jp.nyatla.jzaif.io.IWebsocketObserver;
 import jp.nyatla.jzaif.io.JsrWebsocketClient;
 import jp.nyatla.jzaif.types.CurrencyPair;
@@ -45,7 +46,17 @@ import jp.nyatla.jzaif.types.CurrencyPair;
 public class StreamingApi
 {
 	final private String API_URL_PREFIX="ws://api.zaif.jp:8888/stream?currency_pair=";
-	final private JsrWebsocketClient _client;
+	final private IWebsocketClient _client;
+	/**
+	 * カスタムインタフェイスを使う場合に使用します。
+	 * @param i_client
+	 * @param i_cpair
+	 */
+	public StreamingApi(IWebsocketClient i_client,CurrencyPair i_cpair)
+	{
+		i_client.connect(API_URL_PREFIX+i_cpair.symbol,new WsObserver(this));
+		this._client=i_client;
+	}
 	/**
 	 * 通貨ペアに対応したAPIラッパーを構築します。
 	 * @param i_cpair
@@ -53,9 +64,7 @@ public class StreamingApi
 	 */
 	public StreamingApi(CurrencyPair i_cpair)
 	{
-		JsrWebsocketClient cl=new JsrWebsocketClient();
-		cl.connect(API_URL_PREFIX+i_cpair.zname,new WsObserver(this));
-		this._client=cl;
+		this(new JsrWebsocketClient(),i_cpair);
 	}
 	/**
 	 * インスタンスをシャットダウンします。

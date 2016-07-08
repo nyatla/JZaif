@@ -31,31 +31,38 @@ package jp.nyatla.jzaif.types;
 /**
  * 通貨種別を列挙するクラスです。
  */
-public enum Currency {
-	JPY("jpy"),
-	BTC("btc"),
-	MONA("mona"),
-	XEM("xem");
+public enum Currency implements NamedEnum.Interface
+{
+	JPY("jpy",1),
+	BTC("btc",2),
+	MONA("mona",3),
+	XEM("xem",4);
 	/** Zaifでの通貨名を文字列で保持します。*/
-	final public String zname;
-	private Currency(String i_zname)
+	final public String symbol;
+	final public int id;
+	private Currency(String i_symbol,int i_id)
 	{
-		this.zname=i_zname;
+		this.id=i_id;
+		this.symbol=i_symbol;
 	}
-	/**
-	 * Zaif名を列挙値に変換します。
-	 * @param i_zname
-	 * 通貨のzaif名。
-	 * @return
-	 * 列挙値。
-	 */
-	public static Currency strToVal(String i_zname)
+	@Override
+	final public int getId(){
+		return this.id;
+	}
+	@Override
+	final public String getSymbol() {
+		return this.symbol;
+	}
+	public static Currency toEnum(String i_symbol) {
+		return NamedEnum.toEnum(Currency.class,i_symbol);
+	}
+	public static Currency toEnum(int i_id) {
+		return NamedEnum.toEnum(Currency.class,i_id);
+	}
+	public static void main(String[] i_args)
 	{
-		for(Currency i:Currency.values()){
-			if(i.zname.compareToIgnoreCase(i_zname)==0){
-				return i;
-			}
-		}
-		throw new IllegalArgumentException();
+		System.out.println(Currency.toEnum(3));
+		return;
+		
 	}
 }

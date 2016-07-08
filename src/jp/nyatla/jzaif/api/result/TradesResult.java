@@ -62,12 +62,12 @@ public class TradesResult extends ArrayList<TradesResult.Item>{
 			this.amount=i_src.getDouble("amount");
 			this.tid=i_src.getLong("tid");
 			if(i_src.has("currency_pair")){
-				this.currency_pair=CurrencyPair.strToVal(i_src.getString("currency_pair"));
+				this.currency_pair=CurrencyPair.toEnum(i_src.getString("currency_pair"));
 			}else{
 				//StreamingAPIのbug対応
-				this.currency_pair=CurrencyPair.strToVal(i_src.getString("currenty_pair"));
+				this.currency_pair=CurrencyPair.toEnum(i_src.getString("currenty_pair"));
 			}
-			this.trade_type=TradeType.strToVal(i_src.getString("trade_type"));
+			this.trade_type=TradeType.toEnum(i_src.getString("trade_type"));
 		}
 		@Override
 		public String toString()

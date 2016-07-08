@@ -31,36 +31,37 @@ package jp.nyatla.jzaif.types;
 /**
  * 通貨ペアを列挙するクラスです。
  */
-public enum CurrencyPair {
+public enum CurrencyPair implements NamedEnum.Interface
+{
 	BTCJPY(Currency.BTC,Currency.JPY),
 	MONAJPY(Currency.MONA,Currency.JPY),
 	MONABTC(Currency.MONA,Currency.BTC),
 	XEMJPY(Currency.XEM,Currency.JPY);
 	/** Zaifでの通貨ペア名を文字列で保持します。*/
-	final public String zname;
+	final public String symbol;
+	final public int id;
 	private CurrencyPair(Currency l,Currency r)
 	{
-		this(l.zname+"_"+r.zname);
-		
+		this(l.symbol+"_"+r.symbol,((l.id<<8) |r.id));
 	}
-	private CurrencyPair(String i_zname)
+	private CurrencyPair(String i_symbol,int i_id)
 	{
-		this.zname=i_zname;
+		this.symbol=i_symbol;
+		this.id=i_id;
 	}
-	/**
-	 * Zaif名を列挙値に変換します。
-	 * @param i_zname
-	 * 通貨ペアのzaif名。
-	 * @return
-	 * 列挙値。
-	 */	
-	public static CurrencyPair strToVal(String i_zname)
-	{
-		for(CurrencyPair i:CurrencyPair.values()){
-			if(i.zname.compareToIgnoreCase(i_zname)==0){
-				return i;
-			}
-		}
-		throw new IllegalArgumentException();
+	@Override
+	final public int getId(){
+		return this.id;
 	}
+	@Override
+	final public String getSymbol() {
+		return this.symbol;
+	}
+	public static CurrencyPair toEnum(String i_symbol) {
+		return NamedEnum.toEnum(CurrencyPair.class,i_symbol);
+	}
+	public static CurrencyPair toEnum(int i_id) {
+		return NamedEnum.toEnum(CurrencyPair.class,i_id);
+	}	
+
 }

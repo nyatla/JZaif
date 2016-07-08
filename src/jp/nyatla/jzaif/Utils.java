@@ -32,6 +32,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import jp.nyatla.jzaif.types.Currency;
+import jp.nyatla.jzaif.types.NamedEnum;
+
 /**
  * 便利関数などを定義します。
  */
@@ -46,16 +49,22 @@ public class Utils {
 	{
 		String[]l=i_str.split("\\.");
 		try {
-			long t=sdf1.parse(l[0]).getTime()+(Integer.parseInt(l[1])/1000);
+			long t=sdf1.parse(l[0]).getTime();
+			if(l.length>1){
+				t+=(Integer.parseInt(l[1])/1000);
+			}
 			return new Date(t);
 		} catch (NumberFormatException | ParseException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
+	
 	public static void main(String[] args)
 	{
 		Date d=parseZaifFullTimeText("2016-07-04 21:17:08.662854");
 		System.out.println(d);
+		Date d2=parseZaifFullTimeText("2016-07-04 21:17:08");
+		System.out.println(d2);
 		return;
 	}
 }

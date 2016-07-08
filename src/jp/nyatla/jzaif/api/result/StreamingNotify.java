@@ -66,9 +66,9 @@ public class StreamingNotify {
 				this.target_users.add(a.getString(i));
 			}
 		}
-		this.currency_pair=CurrencyPair.strToVal(i_jso.getString("currency_pair"));
+		this.currency_pair=CurrencyPair.toEnum(i_jso.getString("currency_pair"));
 		JSONObject lp=i_jso.getJSONObject("last_price");
-		this.last_action=TradeType.strToVal(lp.getString("action"));
+		this.last_action=TradeType.toEnum(lp.getString("action"));
 		this.last_price=lp.getDouble("price");
 		this.timestamp=Utils.parseZaifFullTimeText(i_jso.getString("timestamp"));
 		return;
