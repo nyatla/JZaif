@@ -55,7 +55,7 @@ public class ExchangeApiTest {
 		ExchangeApi lp=new ExchangeApi(k);
 		GetInfoResult r1=lp.getInfo();
 		TradeHistoryResult r2=lp.tradeHistory(null,null,null,null,null,null,null,null);
-		TradeResult r4=lp.trade(CurrencyPair.MONAJPY,TradeType.BID,1,1,null);
+//		TradeResult r4=lp.trade(CurrencyPair.MONAJPY,TradeType.BID,1,1,null);
 		ActiveOrdersResult r3=lp.activeOrders(null);
 		CancelOrderResult r5=lp.cancelOrder(r3.orders.get(0).id);
 		

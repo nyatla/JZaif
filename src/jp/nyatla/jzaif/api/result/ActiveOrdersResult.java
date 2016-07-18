@@ -79,7 +79,21 @@ public class ActiveOrdersResult extends ExchangeCommonResult
 			this.orders.add(new Item(Long.parseLong(n),jso.getJSONObject(n)));
 		}
 		return;	 
-		
+	}
+	/**
+	 * オーダーidに一致するオーダーアイテムを返します。
+	 * @param i_id
+	 * @return
+	 * ないときはNULL
+	 */
+	public Item getOrderItemById(long i_id)
+	{
+		for(Item i:this.orders){
+			if(i.id==i_id){
+				return i;
+			}
+		}
+		return null;
 	}
 
 }

@@ -32,7 +32,6 @@ package jp.nyatla.jzaif.api.result;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import jp.nyatla.jzaif.types.CurrencyPair;
 import jp.nyatla.jzaif.types.TradeType;
 
@@ -84,4 +83,19 @@ public class TradeHistoryResult extends ExchangeCommonResult
 		}
 		return;	 
 	}
+	/**
+	 * オーダーidに一致するオーダーアイテムを返します。
+	 * @param i_id
+	 * @return
+	 * ないときはNULL
+	 */
+	public Item getOrderItemById(long i_id)
+	{
+		for(Item i:this.history){
+			if(i.id==i_id){
+				return i;
+			}
+		}
+		return null;
+	}	
 }
