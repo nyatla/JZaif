@@ -84,8 +84,11 @@ public class ExchangeApi
 	}
 	private JSONObject doCommand(String i_method,String i_additional_params)
 	{
-		this._nonce++;
-		String query=String.format("nonce=%d&method=%s",this._nonce,i_method);
+		String query;
+		synchronized(this){
+			this._nonce++;
+			query=String.format("nonce=%d&method=%s",this._nonce,i_method);
+		}
 		if(i_additional_params!=null && i_additional_params.length()>0){
 			query+=i_additional_params;
 		}

@@ -5,6 +5,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="extlib/JSON-java-master.zip"/>
 	<classpathentry kind="lib" path="extlib/tyrus-standalone-client-1.13.jar"/>
-	<classpathentry kind="lib" path="extlib/libNyanSat.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libNyanSat"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

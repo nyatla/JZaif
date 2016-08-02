@@ -29,6 +29,9 @@
 
 package jp.nyatla.jzaif.api.result;
 
+import jp.nyatla.jzaif.types.Currency;
+import jp.nyatla.jzaif.types.NamedEnum;
+
 import org.json.JSONObject;
 
 /**
@@ -39,10 +42,18 @@ public class ExchangeCommonResult {
 	final public boolean success;
 	/** 失敗理由を格納するテキスト。{@link #success}がfalseのときのみ有効。*/
 	final public String error_text;
+	final public ErrorType error_type;
 	public ExchangeCommonResult(boolean i_success,String i_error_text)
 	{
 		this.success=i_success;
 		this.error_text=i_error_text;
+		ErrorType et;
+		try{
+			et=ErrorType.toEnum(i_error_text);
+		}catch(IllegalArgumentException e){
+			et=ErrorType.UNKNOWN;
+		}
+		this.error_type=et;
 	}
 	/** パース済みJSONからインスタンスを構築します。*/
 	public ExchangeCommonResult(JSONObject i_jso)
@@ -51,17 +62,69 @@ public class ExchangeCommonResult {
 		String e=(s?null:i_jso.getString("error"));
 		this.success=s;
 		this.error_text=e;
+		if(!s){
+			//エラーの時だけ
+			this.error_type=ErrorType.toEnum(e);
+		}else{
+			this.error_type=null;
+		}
 	}
-	public class Funds{
+	public static class Funds{
 		final public double jpy;
 		final public double btc;
 		final public double mona;
+		final public double xem;
+		public Funds(double i_jpy,double i_btc,double i_mona,double i_xem){
+			this.jpy=i_jpy;
+			this.btc=i_btc;
+			this.mona=i_mona;
+			this.xem=i_xem;
+		}
+
 		public Funds(JSONObject i_jso)
 		{
-			this.jpy=i_jso.getDouble("jpy");
-			this.btc=i_jso.getDouble("btc");
-			this.mona=i_jso.getDouble("mona");
+			this(
+				i_jso.getDouble("jpy"),
+				i_jso.getDouble("btc"),
+				i_jso.getDouble("mona"),
+				i_jso.has("xem")?i_jso.getDouble("xem"):0);
 		}
-	}	
+	}
+	public static enum ErrorType implements NamedEnum.Interface
+	{
+		NONCE_NOT_INCREMENTED("nonce not incremented",1),
+		INVALID_AMOUNT_PARAMETER("invalid amount parameter",2),
+		INSUFFICIENT_FUNDS("insufficient funds",3),
+		UNKNOWN("unknown",254),
+		NONE("",255);
+		/** エラーメッセージのenum値です。*/
+		final public String symbol;
+		final public int id;
+		private ErrorType(String i_symbol,int i_id)
+		{
+			this.id=i_id;
+			this.symbol=i_symbol;
+		}
+		@Override
+		final public int getId(){
+			return this.id;
+		}
+		@Override
+		final public String getSymbol() {
+			return this.symbol;
+		}
+		public static ErrorType toEnum(String i_symbol) {
+			return NamedEnum.toEnum(ErrorType.class,i_symbol);
+		}
+		public static ErrorType toEnum(int i_id) {
+			return NamedEnum.toEnum(ErrorType.class,i_id);
+		}
+		public static void main(String[] i_args)
+		{
+			System.out.println(ErrorType.toEnum(3));
+			return;
+			
+		}
+	}
 }
 
