@@ -59,12 +59,18 @@ public class ExchangeCommonResult {
 	public ExchangeCommonResult(JSONObject i_jso)
 	{
 		boolean s=i_jso.getInt("success")==1;
-		String e=(s?null:i_jso.getString("error"));
+		String er=(s?null:i_jso.getString("error"));
 		this.success=s;
-		this.error_text=e;
+		this.error_text=er;
 		if(!s){
 			//エラーの時だけ
-			this.error_type=ErrorType.toEnum(e);
+			ErrorType et;
+			try{
+				et=ErrorType.toEnum(er);
+			}catch(IllegalArgumentException e){
+				et=ErrorType.UNKNOWN;
+			}
+			this.error_type=et;
 		}else{
 			this.error_type=null;
 		}
@@ -95,6 +101,9 @@ public class ExchangeCommonResult {
 		NONCE_NOT_INCREMENTED("nonce not incremented",1),
 		INVALID_AMOUNT_PARAMETER("invalid amount parameter",2),
 		INSUFFICIENT_FUNDS("insufficient funds",3),
+		INVALID_ORDER_ID_PARAMETER("invalid order_id parameter",4),
+		ORDER_NOT_FOUND("order not found",5),
+
 		UNKNOWN("unknown",254),
 		NONE("",255);
 		/** エラーメッセージのenum値です。*/

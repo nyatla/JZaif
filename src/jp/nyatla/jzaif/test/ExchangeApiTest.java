@@ -58,6 +58,8 @@ public class ExchangeApiTest {
 		TradeResult r4=lp.trade(CurrencyPair.MONAJPY,TradeType.BID,1,1,null);
 		ActiveOrdersResult r3=lp.activeOrders(null);
 		CancelOrderResult r5=lp.cancelOrder(r3.orders.get(0).id);
+		r5=lp.cancelOrder(r3.orders.get(0).id);
+
 		
 
 //		WithdrawResult r7=lp.withdraw(Currency.MONA, "MMfeGULzEfsRxcehx2Xq5ZArqCfxBoZiSh",0.1,0.0);

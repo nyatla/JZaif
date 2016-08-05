@@ -36,44 +36,14 @@ import java.math.BigDecimal;
 public enum CurrencyPair implements NamedEnum.Interface
 {
 	BTCJPY(Currency.BTC,Currency.JPY){
-		public double toOrderPrice(double s){
-			return Math.round(s/5f)*5;//5円刻み
-		}
-		public double toOrderAmount(double s){
-			return new BigDecimal(s).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
-		}
 	},
 	MONAJPY(Currency.MONA,Currency.JPY){
-		public double toOrderPrice(double s){
-			return new BigDecimal(s).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
-		}
-		public double toOrderAmount(double s){
-			return new BigDecimal(s).setScale(0, BigDecimal.ROUND_HALF_UP).doubleValue();
-		}		
 	},
 	XEMJPY(Currency.XEM,Currency.JPY){
-		public double toOrderPrice(double s){
-			return new BigDecimal(s).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
-		}
-		public double toOrderAmount(double s){
-			return new BigDecimal(s).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
-		}		
 	},
 	XEMBTC(Currency.XEM,Currency.BTC){
-		public double toOrderPrice(double s){
-			return new BigDecimal(s).setScale(8, BigDecimal.ROUND_HALF_UP).doubleValue();
-		}
-		public double toOrderAmount(double s){
-			return new BigDecimal(s).setScale(0, BigDecimal.ROUND_HALF_UP).doubleValue();
-		}		
 	},
-	MONABTC(Currency.MONA,Currency.BTC){
-		public double toOrderPrice(double s){
-			return new BigDecimal(s).setScale(8, BigDecimal.ROUND_HALF_UP).doubleValue();
-		}
-		public double toOrderAmount(double s){
-			return new BigDecimal(s).setScale(0, BigDecimal.ROUND_HALF_UP).doubleValue();
-		}		
+	MONABTC(Currency.MONA,Currency.BTC){		
 	};
 
 	/** Zaifでの通貨ペア名を文字列で保持します。*/
@@ -96,59 +66,12 @@ public enum CurrencyPair implements NamedEnum.Interface
 	final public String getSymbol() {
 		return this.symbol;
 	}
-	/** この通貨ペアの取引通貨単位に正規化します。*/
-	public abstract double toOrderPrice(double s);
-	/** この通貨ペアの取引単位に正規化します。*/
-	public abstract double toOrderAmount(double s);
 	public static CurrencyPair toEnum(String i_symbol) {
 		return NamedEnum.toEnum(CurrencyPair.class,i_symbol);
 	}
 	public static CurrencyPair toEnum(int i_id) {
 		return NamedEnum.toEnum(CurrencyPair.class,i_id);
 	}
-	public static void main(String[] args)
-	{
-		for(int i=0;i<10;i++){
-			System.out.println(CurrencyPair.BTCJPY.toOrderPrice(Math.random()*100));
-		}
-		System.out.println();
-		for(int i=0;i<10;i++){
-			System.out.println(CurrencyPair.MONAJPY.toOrderPrice(Math.random()*10));
-		}
-		System.out.println();
-		for(int i=0;i<10;i++){
-			System.out.println(CurrencyPair.XEMJPY.toOrderPrice(Math.random()*2));
-		}
-		System.out.println();
-		for(int i=0;i<10;i++){
-			System.out.println(CurrencyPair.XEMBTC.toOrderPrice(Math.random()*1));
-		}
-		System.out.println();
-		for(int i=0;i<10;i++){
-			System.out.println(CurrencyPair.MONABTC.toOrderPrice(Math.random()*1));
-		}
-		System.out.println();
-		for(int i=0;i<10;i++){
-			System.out.println(CurrencyPair.BTCJPY.toOrderAmount(Math.random()*100));
-		}
-		System.out.println();
-		for(int i=0;i<10;i++){
-			System.out.println(CurrencyPair.MONAJPY.toOrderAmount(Math.random()*10));
-		}
-		System.out.println();
-		for(int i=0;i<10;i++){
-			System.out.println(CurrencyPair.XEMJPY.toOrderAmount(Math.random()*2));
-		}
-		System.out.println();
-		for(int i=0;i<10;i++){
-			System.out.println(CurrencyPair.XEMBTC.toOrderAmount(Math.random()*10));
-		}
-		System.out.println();
-		for(int i=0;i<10;i++){
-			System.out.println(CurrencyPair.MONABTC.toOrderAmount(Math.random()*10));
-		}
 
-		return;
-	}
 
 }

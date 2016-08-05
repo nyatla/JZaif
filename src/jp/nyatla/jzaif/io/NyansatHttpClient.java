@@ -50,6 +50,12 @@ public class NyansatHttpClient implements IHttpClient
 	public String postText(String i_url,String i_key,String i_sign,String i_msg)
 	{
 		String[][] header={{"Key",i_key},{"Sign",i_sign}};
-		return this._cl.postTextContents(i_url,"UTF-8",header,i_msg);
+		String body=this._cl.postTextContents(i_url,"UTF-8",header,i_msg);
+		if(body==null){
+			System.err.printf("[HTTP error]\n%status=%d\n%s\n",
+				this._cl.getLastStatus(),
+				this._cl.getLastErrorBody());
+		}
+		return body;
 	}
 }

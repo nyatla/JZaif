@@ -28,12 +28,14 @@
  */
 package jp.nyatla.jzaif;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import jp.nyatla.jzaif.types.Currency;
-import jp.nyatla.jzaif.types.NamedEnum;
+import jp.nyatla.jzaif.types.CurrencyPair;
+
+
 
 /**
  * 便利関数などを定義します。
@@ -58,7 +60,49 @@ public class Utils {
 			throw new IllegalArgumentException(e);
 		}
 	}
-	
+	/**
+	 * 注文価格を取引所の単位に正規化します。
+	 * @param i_cpair
+	 * @param s
+	 * @return
+	 */
+	public static double toOrderPrice(CurrencyPair i_cpair,double s)
+	{
+		switch(i_cpair){
+		case BTCJPY:
+			return Math.round(s/5f)*5;//5円刻み
+		case MONAJPY:
+			return new BigDecimal(s).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+		case XEMJPY:
+			return new BigDecimal(s).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+		case XEMBTC:
+			return new BigDecimal(s).setScale(8, BigDecimal.ROUND_HALF_UP).doubleValue();
+		case MONABTC:
+			return new BigDecimal(s).setScale(8, BigDecimal.ROUND_HALF_UP).doubleValue();
+		}
+		throw new IllegalArgumentException();
+	}
+	/**
+	 * 注文単位を取引所の単位に正規化します。
+	 * @param i_cpair
+	 * @param s
+	 * @return
+	 */
+	public static double toOrderAmount(CurrencyPair i_cpair,double s){
+		switch(i_cpair){
+		case BTCJPY:
+			return new BigDecimal(s).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+		case MONAJPY:
+			return new BigDecimal(s).setScale(0, BigDecimal.ROUND_HALF_UP).doubleValue();
+		case XEMJPY:
+			return new BigDecimal(s).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+		case XEMBTC:
+			return new BigDecimal(s).setScale(0, BigDecimal.ROUND_HALF_UP).doubleValue();
+		case MONABTC:
+			return new BigDecimal(s).setScale(0, BigDecimal.ROUND_HALF_UP).doubleValue();
+		}
+		throw new IllegalArgumentException();
+	}	
 	public static void main(String[] args)
 	{
 		Date d=parseZaifFullTimeText("2016-07-04 21:17:08.662854");
@@ -67,4 +111,51 @@ public class Utils {
 		System.out.println(d2);
 		return;
 	}
+/*
+	public static void main(String[] args)
+	{
+		for(int i=0;i<10;i++){
+			System.out.println(toOrderPrice(CurrencyPair.BTCJPY,Math.random()*100));
+		}
+		System.out.println();
+		for(int i=0;i<10;i++){
+			System.out.println(toOrderPrice(CurrencyPair.MONAJPY,Math.random()*10));
+		}
+		System.out.println();
+		for(int i=0;i<10;i++){
+			System.out.println(toOrderPrice(CurrencyPair.XEMJPY,Math.random()*2));
+		}
+		System.out.println();
+		for(int i=0;i<10;i++){
+			System.out.println(toOrderPrice(CurrencyPair.XEMBTC,Math.random()*1));
+		}
+		System.out.println();
+		for(int i=0;i<10;i++){
+			System.out.println(toOrderPrice(CurrencyPair.MONABTC,Math.random()*1));
+		}
+		System.out.println();
+		for(int i=0;i<10;i++){
+			System.out.println(toOrderAmount(CurrencyPair.BTCJPY,(Math.random()*100)));
+		}
+		System.out.println();
+		for(int i=0;i<10;i++){
+			System.out.println(toOrderAmount(CurrencyPair.MONAJPY,(Math.random()*10)));
+		}
+		System.out.println();
+		for(int i=0;i<10;i++){
+			System.out.println(toOrderAmount(CurrencyPair.XEMJPY,(Math.random()*2)));
+		}
+		System.out.println();
+		for(int i=0;i<10;i++){
+			System.out.println(toOrderAmount(CurrencyPair.XEMBTC,(Math.random()*10)));
+		}
+		System.out.println();
+		for(int i=0;i<10;i++){
+			System.out.println(toOrderAmount(CurrencyPair.MONABTC,(Math.random()*10)));
+		}
+
+		return;
+	}
+*/
+
 }
